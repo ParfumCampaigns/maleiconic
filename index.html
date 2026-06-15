@@ -27,7 +27,7 @@
   .model-card { background: #0a0a0a; padding: 2rem; cursor: pointer; transition: background 0.2s; text-decoration: none; display: block; color: inherit; }
   .model-card:hover { background: #111; }
   .model-card .rank { font-family: 'Helvetica Neue', sans-serif; font-size: 10px; letter-spacing: 0.2em; color: #444; margin-bottom: 1.2rem; text-transform: uppercase; }
-  .model-card .img-placeholder { width: 100%; aspect-ratio: 3/4; background: #141414; margin-bottom: 1.2rem; display: flex; align-items: center; justify-content: center; }
+  .model-card .img-placeholder { width: 100%; aspect-ratio: 3/4; background: #141414; margin-bottom: 1.2rem; display: flex; align-items: center; justify-content: center; position: relative; overflow: hidden; }
   .img-placeholder svg { opacity: 0.08; }
   .model-card .name { font-size: 1.1rem; color: #ddd; margin-bottom: 0.4rem; font-weight: 400; }
   .model-card .campaigns { font-family: 'Helvetica Neue', sans-serif; font-size: 11px; color: #555; letter-spacing: 0.04em; line-height: 1.6; }
@@ -104,7 +104,7 @@
 
 <div class="section-header"><h2>The Index</h2><p>Ranked by campaign record, institutional reach, and historical placement.</p></div>
   <div class="grid" id="model-grid"></div>
-  <div class="footer"><p>MaleIconic · The 100 Greatest Male Models · 2026</p><p>Documented. Editorial. Permanent.</p></div>
+  <div class="footer"><p>MaleIconic · The 100 Greatest Male Models · 2026</p><p>James Conrad, Editor · Documented. Editorial. Permanent.</p></div>
 </div>
 <div class="profile" id="profile-page">
   <div style="padding: 7rem 3rem 2rem;"><button class="back-btn" onclick="showHome()">← Back to The 100</button></div>
@@ -137,6 +137,9 @@
     <div style="height:1px;background:rgba(255,255,255,0.07);margin-bottom:3rem;"></div>
     <div style="font-family:'Helvetica Neue',sans-serif;font-size:10px;letter-spacing:0.25em;text-transform:uppercase;color:#444;margin-bottom:1.5rem;">The Archive</div>
     <p style="color:#555;font-size:0.95rem;line-height:1.9;">The Male Model Index at malemodelindex.com is the institutional record. MaleIconic is the editorial companion. Both exist because the history of male modeling has been underdocumented for too long.</p>
+    <div style="height:1px;background:rgba(255,255,255,0.07);margin:3rem 0;"></div>
+    <div style="font-family:'Helvetica Neue',sans-serif;font-size:10px;letter-spacing:0.25em;text-transform:uppercase;color:#444;margin-bottom:0.8rem;">Editor</div>
+    <p style="color:#888;font-size:1rem;line-height:1.9;">James Conrad</p>
   </div>
   <div class="footer"><p>MaleIconic · 2026</p><p><span style="cursor:pointer;color:#555;" onclick="showHome()">← Return to The 100</span></p></div>
 </div>
@@ -252,15 +255,20 @@ function silhouette() {
 
 function buildGrid() {
   const grid = document.getElementById('model-grid');
-  grid.innerHTML = models.map(m => `
-    <a class="model-card" onclick="showProfile(${m.rank}); return false;" href="#">
-      <div class="rank">No. ${String(m.rank).padStart(2,'0')}</div>
-      <div class="img-placeholder">${silhouette()}</div>
-      <div class="name">${m.name}</div>
+  grid.innerHTML = models.map(m => {
+    const searchName = m.name.toLowerCase().replace(/[^a-z0-9]+/g, '+');
+    const googleUrl = 'https://www.google.com/search?q=' + searchName + '+male+model';
+    const rankNum = String(m.rank).padStart(2,'0');
+    return `
+    <div class="model-card">
+      <div class="rank">No. ${rankNum}</div>
+      <div class="img-placeholder" onclick="showProfile(${m.rank})" style="cursor:pointer;">${silhouette()}<div style="position:absolute;bottom:0;left:0;right:0;font-size:7rem;font-weight:700;color:rgba(255,255,255,0.04);letter-spacing:-0.05em;font-family:'Helvetica Neue',sans-serif;line-height:1;text-align:center;pointer-events:none;">${rankNum}</div></div>
+      <a href="${googleUrl}" target="_blank" rel="noopener noreferrer" class="name" style="color:#ddd;text-decoration:none;border-bottom:1px solid rgba(255,255,255,0.1);padding-bottom:1px;display:inline-block;margin-bottom:0.4rem;">${m.name}</a>
       <div class="campaigns">${m.campaigns}</div>
-      <button class="view-profile-btn">View profile →</button>
-    </a>
-  `).join('');
+      <button class="view-profile-btn" onclick="showProfile(${m.rank})">View profile →</button>
+    </div>
+  `;
+  }).join('');
 }
 
 function showProfile(rank) {
