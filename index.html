@@ -267,7 +267,7 @@ function buildGrid() {
     const searchName = m.name.toLowerCase().replace(/[^a-z0-9]+/g, '+');
     const googleUrl = 'https://www.google.com/search?q=' + searchName + '+male+model';
     const googleImages = 'https://www.google.com/search?q=' + searchName + '+male+model&tbm=isch';
-    const googleAI = 'https://www.google.com/search?q=' + searchName + '+male+model&aioverviews=1';
+    const googleAI = 'https://www.google.com/search?q=' + searchName + '+male+model&udm=50';
     const rankNum = String(m.rank).padStart(2,'0');
     return `
     <div class="model-card">
@@ -296,7 +296,7 @@ function showProfile(rank) {
   const searchName = m.name.toLowerCase().replace(/[^a-z0-9]+/g, '+');
   const googleImages = 'https://www.google.com/search?q=' + searchName + '+male+model&tbm=isch';
   const googleWeb = 'https://www.google.com/search?q=' + searchName + '+male+model';
-  const googleAI = 'https://www.google.com/search?q=' + searchName + '+male+model&aioverviews=1';
+  const googleAI = 'https://www.google.com/search?q=' + searchName + '+male+model&udm=50';
   document.getElementById('p-rank').textContent = 'No. ' + rankNum + ' of 100';
   document.getElementById('p-name').innerHTML = m.name;
   document.getElementById('p-years').textContent = m.years;
