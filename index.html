@@ -109,7 +109,19 @@
 <div class="profile" id="profile-page">
   <div style="padding: 7rem 3rem 2rem;"><button class="back-btn" onclick="showHome()">← Back to The 100</button></div>
   <div class="profile-hero">
-    <div class="profile-image-side"><div class="profile-image-placeholder"><svg width="120" height="120" viewBox="0 0 80 80" fill="none"><circle cx="40" cy="30" r="16" stroke="#fff" stroke-width="0.8"/><path d="M8 72 Q40 52 72 72" stroke="#fff" stroke-width="0.8" fill="none"/></svg></div></div>
+    <div class="profile-image-side" id="p-image-side" style="position:relative; overflow:hidden; display:flex; align-items:center; justify-content:center;">
+      <div id="p-bg-rank" style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-size:18rem;font-weight:700;color:rgba(255,255,255,0.025);letter-spacing:-0.05em;font-family:'Helvetica Neue',sans-serif;line-height:1;white-space:nowrap;pointer-events:none;user-select:none;"></div>
+      <div style="position:relative;z-index:2;text-align:center;padding:3rem;">
+        <div id="p-eyebrow" style="font-family:'Helvetica Neue',sans-serif;font-size:9px;letter-spacing:0.3em;text-transform:uppercase;color:rgba(255,255,255,0.25);margin-bottom:2rem;"></div>
+        <div id="p-name-large" style="font-family:Georgia,serif;font-size:clamp(2.5rem,5vw,4.5rem);font-weight:400;color:rgba(255,255,255,0.08);line-height:1.0;margin-bottom:3rem;"></div>
+        <div style="display:flex;flex-direction:column;gap:0.8rem;align-items:center;">
+          <a id="p-img-link" href="#" target="_blank" rel="noopener noreferrer" style="display:block;width:260px;font-family:'Helvetica Neue',sans-serif;font-size:9px;letter-spacing:0.25em;text-transform:uppercase;color:#c8b89a;text-decoration:none;border:1px solid rgba(200,184,154,0.3);padding:0.8rem 2rem;text-align:center;">Search Images →</a>
+          <a id="p-web-link" href="#" target="_blank" rel="noopener noreferrer" style="display:block;width:260px;font-family:'Helvetica Neue',sans-serif;font-size:9px;letter-spacing:0.25em;text-transform:uppercase;color:#c8b89a;text-decoration:none;border:1px solid rgba(200,184,154,0.3);padding:0.8rem 2rem;text-align:center;">Search the Web →</a>
+          <a id="p-ai-link" href="#" target="_blank" rel="noopener noreferrer" style="display:block;width:260px;font-family:'Helvetica Neue',sans-serif;font-size:9px;letter-spacing:0.25em;text-transform:uppercase;color:#c8b89a;text-decoration:none;border:1px solid rgba(200,184,154,0.3);padding:0.8rem 2rem;text-align:center;"></a>
+        </div>
+        <div id="p-campaigns-side" style="margin-top:3rem;font-family:'Helvetica Neue',sans-serif;font-size:9px;letter-spacing:0.2em;text-transform:uppercase;color:rgba(255,255,255,0.12);line-height:2;"></div>
+      </div>
+    </div>
     <div class="profile-content-side">
       <div class="profile-rank" id="p-rank"></div>
       <div class="profile-name" id="p-name"></div>
@@ -255,14 +267,19 @@ function buildGrid() {
     const searchName = m.name.toLowerCase().replace(/[^a-z0-9]+/g, '+');
     const googleUrl = 'https://www.google.com/search?q=' + searchName + '+male+model';
     const googleImages = 'https://www.google.com/search?q=' + searchName + '+male+model&tbm=isch';
+    const googleAI = 'https://www.google.com/search?q=' + searchName + '+male+model&aioverviews=1';
     const rankNum = String(m.rank).padStart(2,'0');
     return `
     <div class="model-card">
       <div class="rank">No. ${rankNum}</div>
       <div style="position:relative;width:100%;aspect-ratio:3/4;background:#111;margin-bottom:1.5rem;display:flex;flex-direction:column;align-items:center;justify-content:center;overflow:hidden;border:1px solid rgba(255,255,255,0.04);">
-        <div style="font-size:9px;font-family:'Helvetica Neue',sans-serif;letter-spacing:0.3em;text-transform:uppercase;color:rgba(255,255,255,0.2);margin-bottom:auto;margin-top:2rem;">${m.name}</div>
+        <div style="font-size:9px;font-family:'Helvetica Neue',sans-serif;letter-spacing:0.3em;text-transform:uppercase;color:rgba(255,255,255,0.2);margin-bottom:auto;margin-top:1.5rem;">${m.name}</div>
         <div style="font-size:6.5rem;font-weight:700;color:rgba(255,255,255,0.06);letter-spacing:-0.05em;font-family:'Helvetica Neue',sans-serif;line-height:1;">${rankNum}</div>
-        <a href="${googleImages}" target="_blank" rel="noopener noreferrer" style="margin-top:auto;margin-bottom:2rem;font-family:'Helvetica Neue',sans-serif;font-size:9px;letter-spacing:0.2em;text-transform:uppercase;color:#c8b89a;text-decoration:none;border:1px solid rgba(200,184,154,0.2);padding:0.5rem 1rem;">Search Images →</a>
+        <div style="margin-top:auto;margin-bottom:1.5rem;display:flex;flex-direction:column;gap:0.5rem;align-items:center;width:100%;padding:0 1.5rem;">
+          <a href="${googleImages}" target="_blank" rel="noopener noreferrer" style="display:block;width:100%;text-align:center;font-family:'Helvetica Neue',sans-serif;font-size:8px;letter-spacing:0.2em;text-transform:uppercase;color:#c8b89a;text-decoration:none;border:1px solid rgba(200,184,154,0.2);padding:0.45rem 0.5rem;">Search Images →</a>
+          <a href="${googleUrl}" target="_blank" rel="noopener noreferrer" style="display:block;width:100%;text-align:center;font-family:'Helvetica Neue',sans-serif;font-size:8px;letter-spacing:0.2em;text-transform:uppercase;color:#c8b89a;text-decoration:none;border:1px solid rgba(200,184,154,0.2);padding:0.45rem 0.5rem;">Search the Web →</a>
+          <a href="${googleAI}" target="_blank" rel="noopener noreferrer" style="display:block;width:100%;text-align:center;font-family:'Helvetica Neue',sans-serif;font-size:8px;letter-spacing:0.2em;text-transform:uppercase;color:#c8b89a;text-decoration:none;border:1px solid rgba(200,184,154,0.2);padding:0.45rem 0.5rem;">Ask AI about ${m.name} →</a>
+        </div>
       </div>
       <a href="${googleUrl}" target="_blank" rel="noopener noreferrer" class="name" style="color:#ddd;text-decoration:none;border-bottom:1px solid rgba(255,255,255,0.1);padding-bottom:1px;display:inline-block;margin-bottom:0.4rem;">${m.name}</a>
       <div class="campaigns">${m.campaigns}</div>
@@ -275,14 +292,27 @@ function buildGrid() {
 function showProfile(rank) {
   const m = models.find(x => x.rank === rank);
   if (!m) return;
-  document.getElementById('p-rank').textContent = 'No. ' + String(m.rank).padStart(2,'0') + ' of 100';
+  const rankNum = String(m.rank).padStart(2,'0');
+  const searchName = m.name.toLowerCase().replace(/[^a-z0-9]+/g, '+');
+  const googleImages = 'https://www.google.com/search?q=' + searchName + '+male+model&tbm=isch';
+  const googleWeb = 'https://www.google.com/search?q=' + searchName + '+male+model';
+  const googleAI = 'https://www.google.com/search?q=' + searchName + '+male+model&aioverviews=1';
+  document.getElementById('p-rank').textContent = 'No. ' + rankNum + ' of 100';
   document.getElementById('p-name').innerHTML = m.name;
   document.getElementById('p-years').textContent = m.years;
   document.getElementById('p-bio').textContent = m.bio;
   document.getElementById('p-campaigns').innerHTML = m.campaigns.split(' · ').map(c => '<li>' + c + '<span>Campaign</span></li>').join('');
   document.getElementById('p-record').innerHTML = m.record;
   document.getElementById('p-placement').textContent = m.placement;
-  document.getElementById('p-footer').textContent = 'MaleIconic · No. ' + String(m.rank).padStart(2,'0') + ' · ' + m.name;
+  document.getElementById('p-footer').textContent = 'MaleIconic · No. ' + rankNum + ' · ' + m.name;
+  document.getElementById('p-bg-rank').textContent = rankNum;
+  document.getElementById('p-eyebrow').textContent = 'No. ' + rankNum + ' of 100';
+  document.getElementById('p-name-large').innerHTML = m.name.replace(' ', '<br>');
+  document.getElementById('p-img-link').href = googleImages;
+  document.getElementById('p-web-link').href = googleWeb;
+  document.getElementById('p-ai-link').href = googleAI;
+  document.getElementById('p-ai-link').textContent = 'Ask AI about ' + m.name + ' →';
+  document.getElementById('p-campaigns-side').textContent = m.campaigns;
   document.getElementById('homepage').style.display = 'none';
   document.getElementById('page-about').style.display = 'none';
   document.getElementById('profile-page').style.display = 'block';
