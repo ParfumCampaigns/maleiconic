@@ -8,6 +8,25 @@
 <style>
   * { margin: 0; padding: 0; box-sizing: border-box; }
   body { background: #0a0a0a; color: #e8e4dc; font-family: 'Georgia', serif; font-size: 16px; line-height: 1.7; }
+
+  /* GLOBE PORTAL STYLES */
+  .portal-page { position: relative; z-index: 1; max-width: 900px; margin: 0 auto; padding: 80px 24px 60px; text-align: center; }
+  .portal-eyebrow { font-family: 'Helvetica Neue', Arial, sans-serif; font-size: 10px; letter-spacing: 0.3em; text-transform: uppercase; color: #777; margin-bottom: 1.2rem; }
+  .portal-h1 { font-size: clamp(2.5rem, 7vw, 5rem); font-weight: 400; line-height: 1.0; color: #fff; margin-bottom: 1rem; }
+  .portal-h1 em { font-style: italic; color: #c8b89a; }
+  .portal-subtitle { font-family: 'Helvetica Neue', Arial, sans-serif; font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase; color: #444; margin-bottom: 0.8rem; }
+  .portal-intro { font-family: 'Helvetica Neue', Arial, sans-serif; font-size: 13px; color: #555; max-width: 480px; margin: 0 auto 2rem; line-height: 1.9; letter-spacing: 0.03em; }
+  .globe-wrap { position: relative; width: 100%; margin: 1rem auto; }
+  canvas#globePortal { width: 100%; display: block; }
+  #info-panel { display: none; position: absolute; bottom: 2rem; left: 50%; transform: translateX(-50%); background: #111; border: 1px solid rgba(255,255,255,0.1); padding: 1.5rem 2rem; max-width: 380px; width: 90%; font-family: 'Helvetica Neue', Arial, sans-serif; z-index: 10; }
+  #info-rank { font-size: 9px; letter-spacing: 0.25em; text-transform: uppercase; color: #c8b89a; margin-bottom: 0.4rem; }
+  #info-name { font-size: 1.2rem; color: #fff; font-family: Georgia, serif; margin-bottom: 0.4rem; }
+  #info-campaigns { font-size: 11px; color: #555; line-height: 1.7; margin-bottom: 1rem; }
+  .info-btn { display: inline-block; font-size: 9px; letter-spacing: 0.2em; text-transform: uppercase; color: #c8b89a; text-decoration: none; border: 1px solid rgba(200,184,154,0.3); padding: 0.6rem 1.2rem; margin-right: 0.5rem; margin-bottom: 0.5rem; }
+  .close-btn { position: absolute; top: 0.75rem; right: 1rem; background: none; border: none; color: #444; font-size: 16px; cursor: pointer; }
+  .scroll-cue { font-family: 'Helvetica Neue', Arial, sans-serif; font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; color: #333; text-align: center; padding: 2rem 0 3rem; border-bottom: 1px solid rgba(255,255,255,0.07); }
+
+  /* MALEICONIC SITE STYLES */
   nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; display: flex; justify-content: space-between; align-items: center; padding: 1.5rem 3rem; background: rgba(10,10,10,0.92); border-bottom: 1px solid rgba(255,255,255,0.07); letter-spacing: 0.12em; font-family: 'Helvetica Neue', sans-serif; font-size: 11px; text-transform: uppercase; }
   nav .logo { font-size: 13px; font-weight: 600; color: #fff; letter-spacing: 0.2em; cursor: pointer; }
   nav a { color: #888; text-decoration: none; transition: color 0.2s; }
@@ -28,16 +47,12 @@
   .model-card { background: #0a0a0a; padding: 2rem; cursor: pointer; transition: background 0.2s; text-decoration: none; display: block; color: inherit; }
   .model-card:hover { background: #111; }
   .model-card .rank { font-family: 'Helvetica Neue', sans-serif; font-size: 10px; letter-spacing: 0.2em; color: #444; margin-bottom: 1.2rem; text-transform: uppercase; }
-  .model-card .img-placeholder { width: 100%; aspect-ratio: 3/4; background: #141414; margin-bottom: 1.2rem; display: flex; align-items: center; justify-content: center; position: relative; overflow: hidden; }
-  .img-placeholder svg { opacity: 0.08; }
   .model-card .name { font-size: 1.1rem; color: #ddd; margin-bottom: 0.4rem; font-weight: 400; }
   .model-card .campaigns { font-family: 'Helvetica Neue', sans-serif; font-size: 11px; color: #555; letter-spacing: 0.04em; line-height: 1.6; }
   .view-profile-btn { display: inline-block; margin-top: 1rem; font-family: 'Helvetica Neue', sans-serif; font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; color: #c8b89a; cursor: pointer; background: none; border: none; padding: 0; }
   .profile { display: none; }
   .profile-hero { min-height: 100vh; display: grid; grid-template-columns: 1fr 1fr; }
   .profile-image-side { background: #111; display: flex; align-items: center; justify-content: center; }
-  .profile-image-placeholder { width: 100%; min-height: 600px; background: #141414; display: flex; align-items: center; justify-content: center; }
-  .profile-image-placeholder svg { opacity: 0.06; }
   .profile-content-side { display: flex; flex-direction: column; justify-content: flex-end; padding: 5rem 4rem; border-left: 1px solid rgba(255,255,255,0.07); }
   .profile-rank { font-family: 'Helvetica Neue', sans-serif; font-size: 10px; letter-spacing: 0.25em; color: #555; text-transform: uppercase; margin-bottom: 1.5rem; }
   .profile-name { font-size: clamp(2.5rem, 5vw, 4.5rem); font-weight: 400; color: #fff; line-height: 1.05; margin-bottom: 1rem; }
@@ -61,6 +76,32 @@
 </style>
 </head>
 <body>
+
+<!-- GLOBE PORTAL -->
+<div class="portal-page">
+  <div class="portal-eyebrow">MaleIconic · Est. 2026</div>
+  <h1 class="portal-h1">The <em>100</em></h1>
+  <p class="portal-subtitle">The Definitive Record of the Greatest Male Models in History</p>
+  <p class="portal-intro">One hundred names. Spin the globe. Click any name to explore. James Conrad, Editor.</p>
+  <p style="font-family:'Helvetica Neue',Arial,sans-serif;font-size:10px;letter-spacing:0.15em;text-transform:uppercase;color:#333;margin-bottom:1rem;">Drag to spin · Click any name to explore</p>
+
+  <div class="globe-wrap">
+    <canvas id="globePortal"></canvas>
+    <div id="info-panel">
+      <button class="close-btn" onclick="document.getElementById('info-panel').style.display='none'">×</button>
+      <div id="info-rank"></div>
+      <div id="info-name"></div>
+      <div id="info-campaigns"></div>
+      <a id="info-profile" href="#homepage" class="info-btn" onclick="document.getElementById('info-panel').style.display='none';showHome();">View in Archive ↓</a>
+      <a id="info-images" href="#" target="_blank" class="info-btn">Search Images →</a>
+      <a id="info-ai" href="#" target="_blank" class="info-btn">Ask AI →</a>
+    </div>
+  </div>
+</div>
+
+<div class="scroll-cue">↓ Scroll to enter the archive · The 100 Greatest Male Models of All Time</div>
+
+<!-- MALEICONIC SITE -->
 <nav>
   <div class="logo" onclick="showHome()">MaleIconic</div>
   <div class="nav-links">
@@ -68,6 +109,7 @@
     <a href="#" onclick="showAbout(); return false;">About</a>
   </div>
 </nav>
+
 <div class="homepage" id="homepage">
   <div class="hero">
     <div class="hero-eyebrow">The Definitive Editorial Record · Est. 2026</div>
@@ -75,7 +117,7 @@
     <p class="hero-sub">An editorial perspective on the men who defined international commercial fashion and fragrance advertising — informed by the archive, expressed in full.</p>
     <div class="hero-counter"><div class="big-number">100</div><div class="label">Verified entries</div></div>
   </div>
-  
+
 <div style="background:#0a0a0a; border-bottom: 1px solid rgba(255,255,255,0.07);">
   <div style="max-width:1200px; margin: 0 auto; padding: 5rem 3rem;">
     <div style="font-family:'Helvetica Neue',sans-serif; font-size:10px; letter-spacing:0.25em; text-transform:uppercase; color:#555; margin-bottom:2rem;">Editorial · The Mount Rushmore of Modeling</div>
@@ -113,6 +155,7 @@
   <div class="grid" id="model-grid"></div>
   <div class="footer"><p>MaleIconic · The 100 Greatest Male Models · 2026</p><p>James Conrad, Editor · Documented. Editorial. Permanent.</p></div>
 </div>
+
 <div class="profile" id="profile-page">
   <div style="padding: 7rem 3rem 2rem;"><button class="back-btn" onclick="showHome()">← Back to The 100</button></div>
   <div class="profile-hero">
@@ -144,6 +187,7 @@
   </div>
   <div class="footer"><p id="p-footer"></p><p><span style="cursor:pointer;color:#555;" onclick="showHome()">← Return to The 100</span></p></div>
 </div>
+
 <div class="profile" id="page-about">
   <div style="padding: 7rem 3rem 2rem;"><button class="back-btn" onclick="showHome()">← Back to The 100</button></div>
   <div style="max-width: 720px; margin: 0 auto; padding: 2rem 2rem 8rem;">
@@ -164,6 +208,235 @@
 </div>
 
 <script>
+// GLOBE DATA
+const globeModels = [
+  { rank: 1, name: "David Gandy", campaigns: "Dolce & Gabbana · Light Blue · Marks & Spencer", lat: 72, lon: -20 },
+  { rank: 2, name: "Michael Flinn", campaigns: "Hugo Boss · Boss Fragrance · Hugo Menswear", lat: -15, lon: -150 },
+  { rank: 3, name: "Mark Vanderloo", campaigns: "Hugo Boss · Calvin Klein · Valentino", lat: 38, lon: 60 },
+  { rank: 4, name: "Sean O'Pry", campaigns: "Calvin Klein · Versace · H&M", lat: -55, lon: 30 },
+  { rank: 5, name: "Marcus Schenkenberg", campaigns: "Calvin Klein Underwear · CK Jeans · Versace", lat: 20, lon: 140 },
+  { rank: 6, name: "Tyson Beckford", campaigns: "Polo Ralph Lauren · RL Sport · RL Fragrance", lat: 65, lon: 100 },
+  { rank: 7, name: "Jeff Aquilon", campaigns: "Calvin Klein · Perry Ellis · Versace", lat: -40, lon: -70 },
+  { rank: 8, name: "Tyson Ballou", campaigns: "Versace · Dolce & Gabbana · Jil Sander", lat: 50, lon: -140 },
+  { rank: 9, name: "Alton Mason", campaigns: "Chanel · luxury fashion · fragrance", lat: -70, lon: 80 },
+  { rank: 10, name: "Jon Kortajarena", campaigns: "Armani · Tom Ford · fragrance", lat: 25, lon: -60 },
+  { rank: 11, name: "Lucky Blue Smith", campaigns: "Tommy Hilfiger · menswear · youth", lat: 78, lon: 60 },
+  { rank: 12, name: "Noah Mills", campaigns: "Dolce & Gabbana · fragrance · menswear", lat: -25, lon: 130 },
+  { rank: 13, name: "Bruce Hulse", campaigns: "Men's Fitness · GQ · catalog", lat: 55, lon: -80 },
+  { rank: 14, name: "Matt Norklun", campaigns: "Fitness brands · catalog · lifestyle", lat: -60, lon: -120 },
+  { rank: 15, name: "Werner Schreyer", campaigns: "GUESS global · European fashion · fragrance", lat: 10, lon: 170 },
+  { rank: 16, name: "Terrence Sheahan", campaigns: "Lifestyle apparel · catalog · menswear", lat: 68, lon: -150 },
+  { rank: 17, name: "Tony Spinelli", campaigns: "Fitness brands · athletic apparel · print", lat: -35, lon: 20 },
+  { rank: 18, name: "Michael Ives", campaigns: "Ralph Lauren · lifestyle apparel · menswear", lat: 42, lon: -170 },
+  { rank: 19, name: "Michael Bergin", campaigns: "Calvin Klein Underwear · Liz Claiborne · CK Jeans", lat: -8, lon: 50 },
+  { rank: 20, name: "Walter Schupfer", campaigns: "European luxury fashion · fragrance · menswear", lat: 60, lon: 40 },
+  { rank: 21, name: "Cameron Alborzian", campaigns: "GUESS global · lifestyle apparel · menswear", lat: -50, lon: 160 },
+  { rank: 22, name: "John Pearson", campaigns: "Fragrance · British menswear · luxury print", lat: 30, lon: -110 },
+  { rank: 23, name: "Antonio Sabato Jr.", campaigns: "Calvin Klein Obsession · CK Jeans · fragrance", lat: 75, lon: -60 },
+  { rank: 24, name: "Ric Arango", campaigns: "Calvin Klein Obsession · CK Fragrance · CK print", lat: -20, lon: -30 },
+  { rank: 25, name: "Alex Lundqvist", campaigns: "Estée Lauder Men · GUESS · grooming", lat: 48, lon: 120 },
+  { rank: 26, name: "Tony Ward", campaigns: "Versace · fashion print · fragrance", lat: -65, lon: -40 },
+  { rank: 27, name: "Hoyt Richards", campaigns: "Polo Ralph Lauren · lifestyle · menswear", lat: 15, lon: -90 },
+  { rank: 28, name: "Joel West", campaigns: "Versace · 1990s fashion · menswear", lat: 62, lon: 160 },
+  { rank: 29, name: "Larry Scott", campaigns: "Acqua di Giò · fragrance print · menswear", lat: -45, lon: 90 },
+  { rank: 30, name: "David Boals", campaigns: "American lifestyle · menswear · print", lat: 35, lon: -30 },
+  { rank: 31, name: "Simon Nessman", campaigns: "Giorgio Armani · Armani Fragrance · menswear", lat: -10, lon: -160 },
+  { rank: 32, name: "Marlon Teixeira", campaigns: "Armani Exchange · Dior · menswear", lat: 58, lon: -120 },
+  { rank: 33, name: "Evandro Soldati", campaigns: "Armani Exchange · AX Fragrance · menswear", lat: -30, lon: 70 },
+  { rank: 34, name: "Brad Kroenig", campaigns: "Chanel · Chanel accessories · fragrance", lat: 80, lon: 120 },
+  { rank: 35, name: "Garrett Neff", campaigns: "Calvin Klein · CK Fragrance · menswear", lat: -55, lon: -90 },
+  { rank: 36, name: "Clément Chabernaud", campaigns: "Prada · Prada Fragrance · luxury menswear", lat: 22, lon: 30 },
+  { rank: 37, name: "Lars Burmeister", campaigns: "Hugo Boss · Boss Fragrance · menswear", lat: -75, lon: 140 },
+  { rank: 38, name: "Johannes Huebl", campaigns: "Ralph Lauren · lifestyle apparel · fragrance", lat: 45, lon: -50 },
+  { rank: 39, name: "Baptiste Giabiconi", campaigns: "Chanel · Chanel Fragrance · accessories", lat: -18, lon: 110 },
+  { rank: 40, name: "Nacho Figueras", campaigns: "Polo Ralph Lauren · lifestyle · fragrance", lat: 70, lon: -100 },
+  { rank: 41, name: "Gabriel Aubry", campaigns: "Chanel · Givenchy · menswear", lat: -42, lon: -150 },
+  { rank: 42, name: "Oriol Elcacho", campaigns: "Gucci · luxury menswear · fragrance", lat: 32, lon: 150 },
+  { rank: 43, name: "Andres Velencoso", campaigns: "Chanel · Louis Vuitton · fragrance", lat: -62, lon: 60 },
+  { rank: 44, name: "Chad White", campaigns: "Hugo Boss · fragrance · menswear", lat: 18, lon: -130 },
+  { rank: 45, name: "Jason Shaw", campaigns: "US campaigns · menswear · fragrance", lat: 55, lon: 10 },
+  { rank: 46, name: "Ben Hill", campaigns: "Lifestyle catalog · menswear · print", lat: -28, lon: -60 },
+  { rank: 47, name: "David Fumero", campaigns: "Fashion campaigns · lifestyle · menswear", lat: 40, lon: 90 },
+  { rank: 48, name: "Jack Scalia", campaigns: "Catalog campaigns · lifestyle apparel · menswear", lat: -72, lon: -10 },
+  { rank: 49, name: "Matt McColm", campaigns: "Ralph Lauren Chaps · lifestyle apparel · menswear", lat: 28, lon: -170 },
+  { rank: 50, name: "Fabio Lanzoni", campaigns: "Romance cover campaigns · lifestyle · menswear", lat: 65, lon: -40 },
+  { rank: 51, name: "Boris Kodjoe", campaigns: "Versace · fashion print · menswear", lat: -48, lon: 130 },
+  { rank: 52, name: "Godfrey Gao", campaigns: "Louis Vuitton · Asian luxury · menswear", lat: 12, lon: 50 },
+  { rank: 53, name: "Broderick Hunter", campaigns: "Ralph Lauren · fragrance · menswear", lat: 72, lon: 40 },
+  { rank: 54, name: "Hu Bing", campaigns: "Louis Vuitton · Chinese luxury · menswear", lat: -35, lon: -110 },
+  { rank: 55, name: "Oliver Cheshire", campaigns: "Calvin Klein · Missoni · Hollister", lat: 50, lon: 170 },
+  { rank: 56, name: "Jordan Barrett", campaigns: "Tom Ford · fragrance · menswear", lat: -15, lon: -80 },
+  { rank: 57, name: "Kit Butler", campaigns: "Dolce & Gabbana · Gucci · Tommy Hilfiger", lat: 38, lon: -140 },
+  { rank: 58, name: "Francisco Lachowski", campaigns: "Prada · Dior · menswear", lat: -58, lon: -160 },
+  { rank: 59, name: "Tobias Sorensen", campaigns: "Versace · Dolce & Gabbana · fragrance", lat: 25, lon: 80 },
+  { rank: 60, name: "Leon Dame", campaigns: "Maison Margiela · luxury fashion · menswear", lat: -22, lon: 160 },
+  { rank: 61, name: "Jamie Dornan", campaigns: "Hugo Boss · Dior Homme · Calvin Klein", lat: 60, lon: -60 },
+  { rank: 62, name: "Fernando Lindez", campaigns: "Spanish luxury youth · menswear · fragrance", lat: -40, lon: 40 },
+  { rank: 63, name: "Pietro Boselli", campaigns: "Armani · menswear · fragrance", lat: 15, lon: 120 },
+  { rank: 64, name: "Alexandre Cunha", campaigns: "Balmain · luxury fashion · menswear", lat: -68, lon: -80 },
+  { rank: 65, name: "Ivan de Pineda", campaigns: "Latin American luxury · menswear · lifestyle", lat: 45, lon: 30 },
+  { rank: 66, name: "Tim Easton", campaigns: "Versace · fashion print · menswear", lat: -5, lon: -120 },
+  { rank: 67, name: "Enrique Palacios", campaigns: "Tommy Hilfiger · fragrance · menswear", lat: 68, lon: -170 },
+  { rank: 68, name: "Tomas Skoloudik", campaigns: "Armani · menswear · fragrance", lat: -50, lon: -30 },
+  { rank: 69, name: "Sterling St. Jacques", campaigns: "1970s disco-era campaigns · menswear", lat: 32, lon: -90 },
+  { rank: 70, name: "Adonis Bosso", campaigns: "Givenchy · luxury menswear · fragrance", lat: -25, lon: 0 },
+  { rank: 71, name: "Bill Curry", campaigns: "Armani · Valentino · Eddie Bauer global", lat: 55, lon: -160 },
+  { rank: 72, name: "Renauld White", campaigns: "Perry Ellis · GQ campaigns · menswear", lat: 8, lon: 160 },
+  { rank: 73, name: "Albert Delegue", campaigns: "European fashion · menswear · fragrance", lat: -60, lon: 110 },
+  { rank: 74, name: "Michel de Windt", campaigns: "Fragrance campaigns · menswear · lifestyle", lat: 42, lon: -20 },
+  { rank: 75, name: "Bob Menna", campaigns: "1970s fashion campaigns · lifestyle · menswear", lat: -12, lon: -40 },
+  { rank: 76, name: "Greg Hanson", campaigns: "Catalog mega-distribution · lifestyle · menswear", lat: 75, lon: 160 },
+  { rank: 77, name: "Richard Biedul", campaigns: "Tailoring campaigns · British menswear · fragrance", lat: -45, lon: -170 },
+  { rank: 78, name: "Andrea Boccaletti", campaigns: "Dior · Italian luxury fashion · Model Plan Milan", lat: 28, lon: 110 },
+  { rank: 79, name: "Jeffrey Brezovar", campaigns: "Fragrance campaigns · menswear print · lifestyle", lat: -70, lon: -130 },
+  { rank: 80, name: "Derek Brewer", campaigns: "Lifestyle apparel · print campaigns · menswear", lat: 52, lon: -100 },
+  { rank: 81, name: "Keith Brewer", campaigns: "Catalog campaigns · lifestyle apparel · menswear", lat: -32, lon: 140 },
+  { rank: 82, name: "Brian Buzzini", campaigns: "Fitness apparel · lifestyle print · Davidoff Cool Water", lat: 18, lon: -50 },
+  { rank: 83, name: "Mike Campbell", campaigns: "1980s fashion campaigns · lifestyle · menswear", lat: 62, lon: -20 },
+  { rank: 84, name: "John Foster", campaigns: "Versace · International Male · fragrance", lat: -38, lon: -90 },
+  { rank: 85, name: "Nick Constantino", campaigns: "1980s fashion print · menswear · lifestyle", lat: 35, lon: 170 },
+  { rank: 86, name: "Brett Salisbury", campaigns: "Nokia global · Nexxus Hair global · Laura Biagiotti", lat: -8, lon: 20 },
+  { rank: 87, name: "Brett Hollands", campaigns: "Print-commercial campaigns · menswear · lifestyle", lat: 48, lon: -80 },
+  { rank: 88, name: "Rick Edwards", campaigns: "British fashion campaigns · menswear · fragrance", lat: -55, lon: 60 },
+  { rank: 89, name: "Jose Maria Manzanares", campaigns: "Luxury lifestyle · menswear · fragrance", lat: 20, lon: -10 },
+  { rank: 90, name: "Tim Boyce", campaigns: "Giorgio Armani · Gianfranco Ferré · Levi's global", lat: -20, lon: 90 },
+  { rank: 91, name: "Alessio Pozzi", campaigns: "Givenchy · Armani · Versace", lat: 70, lon: -130 },
+  { rank: 92, name: "Paul Palmero", campaigns: "European fashion · menswear · fragrance", lat: -48, lon: -50 },
+  { rank: 93, name: "Richard Popejoy", campaigns: "GQ · Ford Models · catalog mega-distribution", lat: 38, lon: -60 },
+  { rank: 94, name: "Marco de Conciliis", campaigns: "Calvin Klein · European lifestyle · menswear", lat: -15, lon: 130 },
+  { rank: 95, name: "Sebastian Sauve", campaigns: "Verified major commercial campaigns · menswear", lat: 58, lon: 80 },
+  { rank: 96, name: "Kerry Degman", campaigns: "Major commercial campaigns · menswear · fragrance", lat: -38, lon: 170 },
+  { rank: 97, name: "Arthur Kulkov", campaigns: "Major commercial campaigns · menswear · lifestyle", lat: 25, lon: -150 },
+  { rank: 98, name: "Karl Lindman", campaigns: "Commercial campaigns · menswear · lifestyle", lat: -65, lon: 30 },
+  { rank: 99, name: "Rick Dietz", campaigns: "Commercial campaigns · menswear", lat: 42, lon: 140 },
+  { rank: 100, name: "Tomas Valdemar Hintnaus", campaigns: "Calvin Klein Underwear · CK Jeans · menswear", lat: -28, lon: -140 }
+];
+
+// GLOBE ENGINE
+const gCanvas = document.getElementById('globePortal');
+const gCtx = gCanvas.getContext('2d');
+let gW, gH, gCx, gCy, gR, gRot = 0, gDragging = false, gLastX = 0, gVel = 0.0008, gHovered = -1;
+
+function gResize() {
+  const dpr = window.devicePixelRatio || 1;
+  const w = gCanvas.parentElement.clientWidth;
+  const h = Math.min(w * 0.85, 700);
+  gCanvas.width = w * dpr; gCanvas.height = h * dpr;
+  gCanvas.style.width = w + 'px'; gCanvas.style.height = h + 'px';
+  gCtx.scale(dpr, dpr);
+  gW = w; gH = h; gCx = gW / 2; gCy = gH / 2; gR = Math.min(gW, gH) * 0.4;
+}
+
+function gLatLon(lat, lon, r) {
+  const phi = (90 - lat) * Math.PI / 180, theta = (lon + 180) * Math.PI / 180;
+  return { x: -r * Math.sin(phi) * Math.cos(theta), y: r * Math.cos(phi), z: r * Math.sin(phi) * Math.sin(theta) };
+}
+
+function gRotY(p, a) {
+  return { x: p.x * Math.cos(a) + p.z * Math.sin(a), y: p.y, z: -p.x * Math.sin(a) + p.z * Math.cos(a) };
+}
+
+function gProj(p) { return { sx: gCx + p.x, sy: gCy - p.y, z: p.z }; }
+
+function gDraw() {
+  gCtx.clearRect(0, 0, gW, gH);
+  gCtx.beginPath(); gCtx.arc(gCx, gCy, gR, 0, Math.PI * 2);
+  gCtx.strokeStyle = 'rgba(255,255,255,0.05)'; gCtx.lineWidth = 0.5; gCtx.stroke();
+  gCtx.fillStyle = 'rgba(255,255,255,0.02)'; gCtx.fill();
+
+  for (let lat = -80; lat <= 80; lat += 20) {
+    gCtx.beginPath(); let f = true;
+    for (let lon2 = -180; lon2 <= 180; lon2 += 3) {
+      const r = gRotY(gLatLon(lat, lon2, gR), gRot);
+      if (r.z < 0) { f = true; continue; }
+      const p = gProj(r);
+      if (f) { gCtx.moveTo(p.sx, p.sy); f = false; } else gCtx.lineTo(p.sx, p.sy);
+    }
+    gCtx.strokeStyle = 'rgba(200,184,154,0.07)'; gCtx.lineWidth = 0.3; gCtx.stroke();
+  }
+  for (let lon2 = -180; lon2 < 180; lon2 += 20) {
+    gCtx.beginPath(); let f = true;
+    for (let lat2 = -90; lat2 <= 90; lat2 += 3) {
+      const r = gRotY(gLatLon(lat2, lon2, gR), gRot);
+      if (r.z < 0) { f = true; continue; }
+      const p = gProj(r);
+      if (f) { gCtx.moveTo(p.sx, p.sy); f = false; } else gCtx.lineTo(p.sx, p.sy);
+    }
+    gCtx.strokeStyle = 'rgba(200,184,154,0.07)'; gCtx.lineWidth = 0.3; gCtx.stroke();
+  }
+
+  gCtx.save(); gCtx.textAlign = 'center'; gCtx.textBaseline = 'middle';
+  gCtx.fillStyle = 'rgba(200,184,154,0.55)';
+  gCtx.font = `400 ${Math.floor(gR * 0.1)}px Helvetica Neue, Arial, sans-serif`;
+  gCtx.fillText('MALEICONIC', gCx, gCy - gR * 0.14);
+  gCtx.fillStyle = 'rgba(255,255,255,0.65)';
+  gCtx.font = `700 ${Math.floor(gR * 0.2)}px Georgia, serif`;
+  gCtx.fillText('THE 100', gCx, gCy + gR * 0.08);
+  gCtx.restore();
+
+  globeModels.forEach((m, i) => {
+    const r = gRotY(gLatLon(m.lat, m.lon, gR), gRot);
+    if (r.z < 0) return;
+    const p = gProj(r), isH = gHovered === i, alpha = 0.4 + (r.z / gR) * 0.6;
+    gCtx.beginPath(); gCtx.arc(p.sx, p.sy, isH ? 6 : 3.5, 0, Math.PI * 2);
+    gCtx.fillStyle = isH ? '#c8b89a' : `rgba(200,184,154,${alpha})`; gCtx.fill();
+    if (isH) { gCtx.beginPath(); gCtx.arc(p.sx, p.sy, 12, 0, Math.PI * 2); gCtx.strokeStyle = 'rgba(200,184,154,0.3)'; gCtx.lineWidth = 1; gCtx.stroke(); }
+    gCtx.font = `${isH ? '600' : '400'} ${isH ? 13 : 11}px Helvetica Neue, Arial, sans-serif`;
+    gCtx.fillStyle = isH ? '#fff' : `rgba(220,210,190,${alpha})`;
+    gCtx.textAlign = p.sx > gCx ? 'left' : 'right'; gCtx.textBaseline = 'middle';
+    gCtx.fillText(m.rank === 86 ? `★ ${m.name}` : m.name, p.sx + (p.sx > gCx ? 12 : -12), p.sy);
+  });
+}
+
+function gGetHovered(mx, my) {
+  for (let i = 0; i < globeModels.length; i++) {
+    const r = gRotY(gLatLon(globeModels[i].lat, globeModels[i].lon, gR), gRot);
+    if (r.z < 0) continue;
+    const p = gProj(r), dx = mx - p.sx, dy = my - p.sy;
+    if (Math.sqrt(dx * dx + dy * dy) < 20) return i;
+  }
+  return -1;
+}
+
+function gPos(e) {
+  const rect = gCanvas.getBoundingClientRect(), t = e.touches ? e.touches[0] : e;
+  return { x: t.clientX - rect.left, y: t.clientY - rect.top };
+}
+
+gCanvas.addEventListener('mousemove', e => {
+  const pos = gPos(e); gHovered = gGetHovered(pos.x, pos.y);
+  gCanvas.style.cursor = gHovered >= 0 ? 'pointer' : 'grab';
+  if (gDragging) { const dx = e.clientX - gLastX; gVel = dx * 0.002; gRot += gVel; gLastX = e.clientX; }
+});
+gCanvas.addEventListener('mousedown', e => { gDragging = true; gLastX = e.clientX; gVel = 0; gCanvas.style.cursor = 'grabbing'; });
+gCanvas.addEventListener('mouseup', () => { gDragging = false; gCanvas.style.cursor = 'grab'; });
+gCanvas.addEventListener('mouseleave', () => { gDragging = false; gHovered = -1; });
+gCanvas.addEventListener('click', e => {
+  const pos = gPos(e), idx = gGetHovered(pos.x, pos.y);
+  if (idx < 0) return;
+  const m = globeModels[idx], rankNum = String(m.rank).padStart(2, '0');
+  const sn = m.name.toLowerCase().replace(/[^a-z0-9]+/g, '+');
+  document.getElementById('info-rank').textContent = `No. ${rankNum} of 100`;
+  document.getElementById('info-name').textContent = m.name;
+  document.getElementById('info-campaigns').textContent = m.campaigns;
+  document.getElementById('info-images').href = `https://www.google.com/search?q=${sn}+male+model&tbm=isch`;
+  document.getElementById('info-ai').href = `https://www.google.com/search?q=${sn}+male+model&udm=50`;
+  document.getElementById('info-ai').textContent = `Ask AI about ${m.name} →`;
+  document.getElementById('info-panel').style.display = 'block';
+});
+gCanvas.addEventListener('touchstart', e => { gLastX = e.touches[0].clientX; gVel = 0; }, { passive: true });
+gCanvas.addEventListener('touchmove', e => { const dx = e.touches[0].clientX - gLastX; gVel = dx * 0.002; gRot += gVel; gLastX = e.touches[0].clientX; }, { passive: true });
+
+function gAnimate() {
+  if (!gDragging) gRot += gVel * 0.96;
+  gVel *= 0.97;
+  if (!gDragging && Math.abs(gVel) < 0.0001) gVel = 0.0008;
+  gDraw(); requestAnimationFrame(gAnimate);
+}
+window.addEventListener('resize', gResize);
+gResize(); gAnimate();
+
+// MALEICONIC DATA & FUNCTIONS
 const mmiRanks = {'David Gandy': 2, 'Michael Flinn': 1, 'Mark Vanderloo': 3, "Sean O'Pry": 5, 'Marcus Schenkenberg': 6, 'Tyson Beckford': 7, 'Jeff Aquilon': 4, 'Tyson Ballou': 8, 'Alton Mason': 9, 'Jon Kortajarena': 10, 'Lucky Blue Smith': 11, 'Noah Mills': 12, 'Bruce Hulse': 13, 'Matt Norklun': 14, 'Werner Schreyer': 15, 'Terrence Sheahan': 16, 'Tony Spinelli': 17, 'Michael Ives': 18, 'Michael Bergin': 19, 'Walter Schupfer': 20, 'Cameron Alborzian': 21, 'John Pearson': 22, 'Antonio Sabato Jr.': 23, 'Ric Arango': 24, 'Alex Lundqvist': 25, 'Tony Ward': 26, 'Hoyt Richards': 27, 'Joel West': 28, 'Larry Scott': 29, 'David Boals': 30, 'Simon Nessman': 31, 'Marlon Teixeira': 32, 'Evandro Soldati': 33, 'Brad Kroenig': 34, 'Clément Chabernaud': 36, 'Lars Burmeister': 37, 'Johannes Huebl': 38, 'Baptiste Giabiconi': 39, 'Garrett Neff': 40, 'Nacho Figueras': 41, 'Gabriel Aubry': 42, 'Oriol Elcacho': 43, 'Andres Velencoso': 44, 'Chad White': 45, 'Jason Shaw': 46, 'Ben Hill': 47, 'David Fumero': 48, 'Jack Scalia': 49, 'Matt McColm': 50, 'Fabio Lanzoni': 51, 'Boris Kodjoe': 52, 'Godfrey Gao': 53, 'Broderick Hunter': 54, 'Hu Bing': 55, 'Oliver Cheshire': 56, 'Jordan Barrett': 57, 'Kit Butler': 58, 'Francisco Lachowski': 59, 'Tobias Sorensen': 60, 'Leon Dame': 66, 'Jamie Dornan': 67, 'Fernando Lindez': 62, 'Pietro Boselli': 71, 'Alexandre Cunha': 72, 'Ivan de Pineda': 73, 'Albert Delegue': 74, 'Michel de Windt': 75, 'Tim Easton': 76, 'Enrique Palacios': 77, 'Tomas Skoloudik': 78, 'Sterling St. Jacques': 79, 'Adonis Bosso': 81, 'Bill Curry': 83, 'Renauld White': 84, 'Bob Menna': 85, 'Greg Hanson': 86, 'Richard Biedul': 87, 'Andrea Boccaletti': 88, 'Jeffrey Brezovar': 89, 'Derek Brewer': 90, 'Keith Brewer': 91, 'Brian Buzzini': 92, 'Mike Campbell': 93, 'John Foster': 94, 'Nick Constantino': 95, 'Brett Salisbury': 96, 'Brett Hollands': 97, 'Rick Edwards': 98, 'Jose Maria Manzanares': 99, 'Tim Boyce': 100, 'Alessio Pozzi': 101, 'Paul Palmero': 102, 'Richard Popejoy': 103, 'Marco de Conciliis': 104, 'Sebastian Sauve': 105, 'Tomas Valdemar Hintnaus': 106, 'Kerry Degman': null, 'Arthur Kulkov': null, 'Karl Lindman': null, 'Rick Dietz': null};
 
 const models = [
@@ -269,7 +542,6 @@ const models = [
   { rank: 100, name: "Tomas Valdemar Hintnaus", years: "Active 1980 – 1994", campaigns: "Calvin Klein Underwear · CK Jeans · menswear", bio: "The model at the center of one of the most famous single images in fashion advertising history — a Bruce Weber photograph that turned a Times Square billboard into a cultural event.", record: "<p>Tomas Valdemar Hintnaus occupies a unique position in this list: a career whose institutional significance is anchored substantially in a single image whose cultural reach was extraordinary. Bruce Weber's Calvin Klein Underwear photograph — a Times Square billboard in 1983 — is not merely a memorable advertisement. It is one of the defining commercial images of the decade, and its influence on the subsequent development of male fashion advertising is measurable and direct.</p><p>This list ends where the modern male commercial image began to understand what it was capable of.</p>", placement: "<ul><li>Rank 100 of 100</li><li>Male Model Index — Rank 106 of 106</li><li>Tier V</li><li>Calvin Klein Underwear global, CK Jeans, menswear</li><li>Principal photographer: Bruce Weber</li></ul>" }
 ];
 
-
 function buildGrid() {
   const grid = document.getElementById('model-grid');
   grid.innerHTML = models.map(m => {
@@ -358,8 +630,6 @@ function showAbout() {
 }
 
 buildGrid();
-
-
 </script>
 </body>
 </html>
