@@ -381,7 +381,7 @@ function gDraw() {
     gCtx.font = `${isH ? '600' : '400'} ${isH ? 13 : 11}px Helvetica Neue, Arial, sans-serif`;
     gCtx.fillStyle = isH ? '#fff' : `rgba(220,210,190,${alpha})`;
     gCtx.textAlign = p.sx > gCx ? 'left' : 'right'; gCtx.textBaseline = 'middle';
-    gCtx.fillText(m.rank === 86 ? `★ ${m.name}` : m.name, p.sx + (p.sx > gCx ? 12 : -12), p.sy);
+    gCtx.fillText(m.name, p.sx + (p.sx > gCx ? 12 : -12), p.sy);
   });
 }
 
