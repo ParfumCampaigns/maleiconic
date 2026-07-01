@@ -543,6 +543,12 @@ function buildGrid() {
   grid.innerHTML = models.map(m => {
     const searchName = m.name.toLowerCase().replace(/[^a-z0-9]+/g, '+');
     const googleUrl = 'https://www.google.com/search?q=' + searchName + '+male+model';
+    const wikiPages = new Set(['brett-salisbury','bruce-hulse','david-gandy','hoyt-richards','jeff-aquilon','john-pearson','marcus-schenkenberg','mark-vanderloo','michael-flinn','sean-opry','tom-hintnaus','tony-ward']);
+    const slugOverrides = { 'Tomas Valdemar Hintnaus': 'tom-hintnaus' };
+    function wikiSlug(name) {
+      if (slugOverrides[name]) return slugOverrides[name];
+      return name.toLowerCase().replace(/[\u2018\u2019']/g, '').replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
+    }
     const googleImages = 'https://www.google.com/search?q=' + searchName + '+male+model&tbm=isch';
     const googleAI = 'https://www.google.com/search?q=' + searchName + '+male+model&udm=50';
     const rankNum = String(m.rank).padStart(2,'0');
@@ -573,7 +579,7 @@ function buildGrid() {
           </div>
         </div>
       </div>
-      <a href="${m.rank === 1 ? 'https://thecommercialmale.com/' : m.rank === 2 ? 'https://www.houseofsalisbury.com/michaelflinn' : m.rank === 3 ? 'https://en.wikipedia.org/wiki/Mark_Vanderloo' : m.rank === 4 ? 'https://www.instagram.com/seanopry55/?hl=en' : googleUrl}" target="_blank" rel="noopener noreferrer" class="name" style="color:#ddd;text-decoration:none;border-bottom:1px solid rgba(255,255,255,0.1);padding-bottom:1px;display:inline-block;margin-bottom:0.4rem;">${m.name}</a>
+      <a href="${m.rank === 1 ? 'https://thecommercialmale.com/' : m.rank === 2 ? 'https://www.houseofsalisbury.com/michaelflinn' : m.rank === 3 ? 'https://en.wikipedia.org/wiki/Mark_Vanderloo' : m.rank === 4 ? 'https://www.instagram.com/seanopry55/?hl=en' : wikiPages.has(wikiSlug(m.name)) ? `wiki/${wikiSlug(m.name)}.html` : googleUrl}" target="_blank" rel="noopener noreferrer" class="name" style="color:#ddd;text-decoration:none;border-bottom:1px solid rgba(255,255,255,0.1);padding-bottom:1px;display:inline-block;margin-bottom:0.4rem;">${m.name}</a>
       <div class="campaigns">${m.campaigns}</div>
       <button class="view-profile-btn" onclick="showProfile(${m.rank})">View profile →</button>
     </div>
