@@ -543,7 +543,7 @@ function buildGrid() {
   grid.innerHTML = models.map(m => {
     const searchName = m.name.toLowerCase().replace(/[^a-z0-9]+/g, '+');
     const googleUrl = 'https://www.google.com/search?q=' + searchName + '+male+model';
-    const wikiPages = new Set(['alton-mason','brett-salisbury','brian-buzzini','bruce-hulse','channing-tatum','david-gandy','hoyt-richards','jeff-aquilon','john-pearson','jon-kortajarena','kelly-slater','lucky-blue-smith','marcus-schenkenberg','mark-vanderloo','matt-norklun','michael-bergin','michael-flinn','michael-ives','noah-mills','sean-opry','terrence-sheahan','tom-hintnaus','tony-spinelli','tony-ward','tyson-ballou','tyson-beckford','walter-schupfer','werner-schreyer']);
+    const wikiPages = new Set(['alton-mason','brett-salisbury','brian-buzzini','bruce-hulse','channing-tatum','david-gandy','hoyt-richards','jeff-aquilon','john-pearson','jon-kortajarena','kelly-slater','lucky-blue-smith','marcus-schenkenberg','mark-vanderloo','matt-norklun','michael-bergin','michael-flinn','michael-ives','noah-mills','sean-opry','terrence-sheahan','tom-hintnaus','tony-spinelli','tony-ward','tyson-ballou','tyson-beckford','walter-schupfer','werner-schreyer','mark-wahlberg']);
     const slugOverrides = { 'Tomas Valdemar Hintnaus': 'tom-hintnaus' };
     function wikiSlug(name) {
       if (slugOverrides[name]) return slugOverrides[name];
